@@ -1,8 +1,30 @@
 {
-  "campaigns": [],
-  "investments": [],
+  "campaigns": [
+    {
+      "id": 1,
+      "farmer_name": "tom",
+      "project_title": "tom project",
+      "description": "cow farm",
+      "funding_goal": 10,
+      "farmer_wallet_seed": "sEd7gaEEiTBuJDZnCr46uyYKBBB41ij",
+      "farmer_address": "rHaFFPSmXxTYDnGKUENdvCpU8SacMZLrX8",
+      "token_currency": "TOM",
+      "status": "approved",
+      "created_at": "2025-06-07T17:28:46.705135"
+    }
+  ],
+  "investments": [
+    {
+      "id": 1,
+      "campaign_id": 1,
+      "investor_address": "rMyBuKnshLPfNrAqbKHCM3nCkq2uErtrGK",
+      "amount": 5,
+      "token_id": null,
+      "created_at": "2025-06-07T17:30:40.333405"
+    }
+  ],
   "microloans": [],
-  "next_campaign_id": 1,
-  "next_investment_id": 1,
+  "next_campaign_id": 2,
+  "next_investment_id": 2,
   "next_microloan_id": 1
 }
