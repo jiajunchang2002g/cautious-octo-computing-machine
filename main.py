@@ -1,6 +1,6 @@
 
-import sqlite3
 import json
+import os
 from datetime import datetime
 import mod1  # XRPL wallet functions
 import mod2  # Token/currency functions  
@@ -8,45 +8,33 @@ import mod3  # NFT functions
 
 class CrowdfundingPlatform:
     def __init__(self):
-        self.init_database()
+        self.storage_file = 'storage.json'
+        self.init_storage()
         
-    def init_database(self):
-        """Initialize SQLite database for farmer campaigns"""
-        conn = sqlite3.connect('crowdfunding.db')
-        cursor = conn.cursor()
-        
-        # Create campaigns table
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS campaigns (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                farmer_name TEXT NOT NULL,
-                project_title TEXT NOT NULL,
-                description TEXT NOT NULL,
-                funding_goal INTEGER NOT NULL,
-                farmer_wallet_seed TEXT NOT NULL,
-                farmer_address TEXT NOT NULL,
-                token_currency TEXT,
-                status TEXT DEFAULT 'pending',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        ''')
-        
-        # Create investments table
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS investments (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                campaign_id INTEGER,
-                investor_address TEXT NOT NULL,
-                amount INTEGER NOT NULL,
-                token_id TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (campaign_id) REFERENCES campaigns (id)
-            )
-        ''')
-        
-        conn.commit()
-        conn.close()
-        print("✅ Database initialized")
+    def init_storage(self):
+        """Initialize JSON storage for campaigns and investments"""
+        if not os.path.exists(self.storage_file):
+            initial_data = {
+                'campaigns': [],
+                'investments': [],
+                'next_campaign_id': 1,
+                'next_investment_id': 1
+            }
+            with open(self.storage_file, 'w') as f:
+                json.dump(initial_data, f, indent=2)
+            print("✅ Storage initialized")
+        else:
+            print("✅ Storage loaded")
+
+    def load_data(self):
+        """Load data from JSON file"""
+        with open(self.storage_file, 'r') as f:
+            return json.load(f)
+
+    def save_data(self, data):
+        """Save data to JSON file"""
+        with open(self.storage_file, 'w') as f:
+            json.dump(data, f, indent=2)
 
     def create_campaign(self, farmer_name, project_title, description, funding_goal):
         """Create a new farmer campaign"""
@@ -55,20 +43,26 @@ class CrowdfundingPlatform:
         # Generate XRPL wallet for farmer
         farmer_wallet = mod1.get_account('')
         
-        conn = sqlite3.connect('crowdfunding.db')
-        cursor = conn.cursor()
+        data = self.load_data()
         
-        cursor.execute('''
-            INSERT INTO campaigns (farmer_name, project_title, description, funding_goal, 
-                                 farmer_wallet_seed, farmer_address)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (farmer_name, project_title, description, funding_goal, 
-              farmer_wallet.seed, farmer_wallet.address))
+        campaign = {
+            'id': data['next_campaign_id'],
+            'farmer_name': farmer_name,
+            'project_title': project_title,
+            'description': description,
+            'funding_goal': funding_goal,
+            'farmer_wallet_seed': farmer_wallet.seed,
+            'farmer_address': farmer_wallet.address,
+            'token_currency': None,
+            'status': 'pending',
+            'created_at': datetime.now().isoformat()
+        }
         
-        campaign_id = cursor.lastrowid
-        conn.commit()
-        conn.close()
+        data['campaigns'].append(campaign)
+        data['next_campaign_id'] += 1
+        self.save_data(data)
         
+        campaign_id = campaign['id']
         print(f"✅ Campaign created with ID: {campaign_id}")
         print(f"   Farmer wallet: {farmer_wallet.address}")
         print(f"   Seed (keep safe): {farmer_wallet.seed}")
@@ -77,18 +71,21 @@ class CrowdfundingPlatform:
 
     def approve_campaign(self, campaign_id):
         """Approve campaign and mint project token"""
-        conn = sqlite3.connect('crowdfunding.db')
-        cursor = conn.cursor()
+        data = self.load_data()
         
-        cursor.execute('SELECT * FROM campaigns WHERE id = ?', (campaign_id,))
-        campaign = cursor.fetchone()
+        campaign = None
+        for c in data['campaigns']:
+            if c['id'] == campaign_id:
+                campaign = c
+                break
         
         if not campaign:
             print("❌ Campaign not found")
             return
             
-        farmer_name, project_title = campaign[1], campaign[2]
-        farmer_seed = campaign[5]
+        farmer_name = campaign['farmer_name']
+        project_title = campaign['project_title']
+        farmer_seed = campaign['farmer_wallet_seed']
         
         print(f"\n🎯 Approving campaign: {project_title}")
         
@@ -100,30 +97,30 @@ class CrowdfundingPlatform:
         mod2.configure_account(farmer_seed, True)
         
         # Update campaign status and token info
-        cursor.execute('''
-            UPDATE campaigns SET status = ?, token_currency = ? WHERE id = ?
-        ''', ('approved', token_currency, campaign_id))
+        campaign['status'] = 'approved'
+        campaign['token_currency'] = token_currency
         
-        conn.commit()
-        conn.close()
+        self.save_data(data)
         
         print(f"✅ Campaign approved! Token currency: {token_currency}")
 
     def invest_in_campaign(self, campaign_id, investor_seed, investment_amount):
         """Invest XRP in a campaign and receive project tokens"""
-        conn = sqlite3.connect('crowdfunding.db')
-        cursor = conn.cursor()
+        data = self.load_data()
         
-        cursor.execute('SELECT * FROM campaigns WHERE id = ? AND status = "approved"', (campaign_id,))
-        campaign = cursor.fetchone()
+        campaign = None
+        for c in data['campaigns']:
+            if c['id'] == campaign_id and c['status'] == 'approved':
+                campaign = c
+                break
         
         if not campaign:
             print("❌ Campaign not found or not approved")
             return
             
-        farmer_seed = campaign[5]
-        farmer_address = campaign[6]
-        token_currency = campaign[7]
+        farmer_seed = campaign['farmer_wallet_seed']
+        farmer_address = campaign['farmer_address']
+        token_currency = campaign['token_currency']
         
         investor_wallet = mod1.get_account(investor_seed)
         
@@ -147,37 +144,49 @@ class CrowdfundingPlatform:
         token_result = mod2.send_currency(farmer_seed, investor_wallet.address, token_currency, token_amount)
         
         # Record investment
-        cursor.execute('''
-            INSERT INTO investments (campaign_id, investor_address, amount)
-            VALUES (?, ?, ?)
-        ''', (campaign_id, investor_wallet.address, investment_amount))
+        investment = {
+            'id': data['next_investment_id'],
+            'campaign_id': campaign_id,
+            'investor_address': investor_wallet.address,
+            'amount': investment_amount,
+            'token_id': None,
+            'created_at': datetime.now().isoformat()
+        }
         
-        conn.commit()
-        conn.close()
+        data['investments'].append(investment)
+        data['next_investment_id'] += 1
+        self.save_data(data)
         
         print(f"✅ Investment successful!")
         print(f"   Received {token_amount} {token_currency} tokens")
 
     def list_campaigns(self):
         """List all campaigns"""
-        conn = sqlite3.connect('crowdfunding.db')
-        cursor = conn.cursor()
-        
-        cursor.execute('SELECT * FROM campaigns ORDER BY created_at DESC')
-        campaigns = cursor.fetchall()
+        data = self.load_data()
+        campaigns = data['campaigns']
         
         print("\n📋 All Campaigns:")
         print("-" * 80)
         
-        for campaign in campaigns:
-            campaign_id, farmer_name, title, desc, goal, _, _, token, status, created = campaign
+        if not campaigns:
+            print("No campaigns found.")
+            return
+        
+        for campaign in sorted(campaigns, key=lambda x: x['created_at'], reverse=True):
+            campaign_id = campaign['id']
+            farmer_name = campaign['farmer_name']
+            title = campaign['project_title']
+            desc = campaign['description']
+            goal = campaign['funding_goal']
+            token = campaign['token_currency']
+            status = campaign['status']
+            created = campaign['created_at']
+            
             print(f"ID: {campaign_id} | {title} by {farmer_name}")
             print(f"   Goal: {goal} XRP | Status: {status} | Token: {token or 'N/A'}")
             print(f"   Description: {desc}")
             print(f"   Created: {created}")
             print("-" * 80)
-            
-        conn.close()
 
     def check_balances(self, wallet_seed):
         """Check wallet balances"""
