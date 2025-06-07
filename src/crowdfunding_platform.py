@@ -5,7 +5,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
 import wallet  # XRPL wallet functions
-import tokens  # Token/currency functions  
+import tokens  # Token/currency functions
+import escrow_time  # Time-based escrow functions  
 
 class CrowdfundingPlatform:
     def __init__(self):
@@ -186,6 +187,157 @@ class CrowdfundingPlatform:
             print(f"ID: {campaign_id} | {title} by {farmer_name}")
             print(f"   Goal: {goal} XRP | Status: {status} | Token: {token or 'N/A'}")
             print(f"   Description: {desc}")
+            print(f"   Created: {created}")
+            print("-" * 80)
+
+    def create_microloan(self, farmer_address, investor_seed, loan_amount, repayment_days):
+        """Create an escrow-based microloan"""
+        print(f"\n🏦 Creating microloan of {loan_amount} XRP...")
+        
+        # Convert loan amount to drops (XRP smallest unit)
+        loan_amount_drops = str(int(loan_amount * 1000000))
+        
+        # Calculate time periods (in seconds)
+        repayment_seconds = repayment_days * 24 * 60 * 60
+        cancel_seconds = repayment_seconds + (7 * 24 * 60 * 60)  # 7 days grace period
+        
+        # Create time-based escrow
+        print("   Creating escrow contract...")
+        escrow_result = escrow_time.create_time_escrow(
+            investor_seed,
+            loan_amount_drops,
+            farmer_address,
+            repayment_seconds,
+            cancel_seconds
+        )
+        
+        if "Submit failed" in str(escrow_result):
+            print(f"❌ Escrow creation failed: {escrow_result}")
+            return None
+            
+        # Store microloan data
+        data = self.load_data()
+        
+        if 'microloans' not in data:
+            data['microloans'] = []
+            data['next_microloan_id'] = 1
+        
+        investor_wallet = wallet.get_account(investor_seed)
+        
+        microloan = {
+            'id': data['next_microloan_id'],
+            'farmer_address': farmer_address,
+            'investor_address': investor_wallet.address,
+            'loan_amount': loan_amount,
+            'repayment_days': repayment_days,
+            'status': 'active',
+            'escrow_sequence': escrow_result.get('Sequence', 0),
+            'created_at': datetime.now().isoformat()
+        }
+        
+        data['microloans'].append(microloan)
+        data['next_microloan_id'] += 1
+        self.save_data(data)
+        
+        print(f"✅ Microloan created!")
+        print(f"   Loan ID: {microloan['id']}")
+        print(f"   Amount: {loan_amount} XRP")
+        print(f"   Repayment due: {repayment_days} days")
+        print(f"   Escrow sequence: {microloan['escrow_sequence']}")
+        
+        return microloan['id']
+
+    def finish_microloan(self, microloan_id, farmer_seed):
+        """Finish microloan escrow (farmer claims funds)"""
+        data = self.load_data()
+        
+        microloan = None
+        for ml in data.get('microloans', []):
+            if ml['id'] == microloan_id and ml['status'] == 'active':
+                microloan = ml
+                break
+        
+        if not microloan:
+            print("❌ Microloan not found or already completed")
+            return
+            
+        print(f"\n💰 Finishing microloan #{microloan_id}...")
+        
+        # Farmer claims the escrowed funds
+        finish_result = escrow_time.finish_time_escrow(
+            farmer_seed,
+            microloan['investor_address'],
+            microloan['escrow_sequence']
+        )
+        
+        if "Submit failed" in str(finish_result):
+            print(f"❌ Escrow finish failed: {finish_result}")
+            return
+            
+        # Update microloan status
+        microloan['status'] = 'completed'
+        microloan['completed_at'] = datetime.now().isoformat()
+        self.save_data(data)
+        
+        print(f"✅ Microloan completed! Farmer received {microloan['loan_amount']} XRP")
+
+    def cancel_microloan(self, microloan_id, investor_seed):
+        """Cancel microloan escrow (investor reclaims funds)"""
+        data = self.load_data()
+        
+        microloan = None
+        for ml in data.get('microloans', []):
+            if ml['id'] == microloan_id and ml['status'] == 'active':
+                microloan = ml
+                break
+        
+        if not microloan:
+            print("❌ Microloan not found or already completed")
+            return
+            
+        print(f"\n🔄 Canceling microloan #{microloan_id}...")
+        
+        # Investor reclaims the escrowed funds
+        cancel_result = escrow_time.cancel_time_escrow(
+            investor_seed,
+            microloan['investor_address'],
+            microloan['escrow_sequence']
+        )
+        
+        if "Submit failed" in str(cancel_result):
+            print(f"❌ Escrow cancel failed: {cancel_result}")
+            return
+            
+        # Update microloan status
+        microloan['status'] = 'cancelled'
+        microloan['cancelled_at'] = datetime.now().isoformat()
+        self.save_data(data)
+        
+        print(f"✅ Microloan cancelled! Investor reclaimed {microloan['loan_amount']} XRP")
+
+    def list_microloans(self):
+        """List all microloans"""
+        data = self.load_data()
+        microloans = data.get('microloans', [])
+        
+        print("\n🏦 All Microloans:")
+        print("-" * 80)
+        
+        if not microloans:
+            print("No microloans found.")
+            return
+        
+        for loan in sorted(microloans, key=lambda x: x['created_at'], reverse=True):
+            loan_id = loan['id']
+            farmer = loan['farmer_address'][:10] + "..."
+            investor = loan['investor_address'][:10] + "..."
+            amount = loan['loan_amount']
+            days = loan['repayment_days']
+            status = loan['status']
+            created = loan['created_at']
+            
+            print(f"ID: {loan_id} | {amount} XRP | {days} days | Status: {status}")
+            print(f"   Farmer: {farmer} | Investor: {investor}")
             print(f"   Created: {created}")
             print("-" * 80)
 

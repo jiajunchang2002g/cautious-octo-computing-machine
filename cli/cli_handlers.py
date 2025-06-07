@@ -37,7 +37,7 @@ def handle_investment(platform):
         investor_seed = new_wallet.seed
         print(f"New wallet created: {new_wallet.address}")
         print(f"Your seed (save this!): {investor_seed}")
-    
+
     amount = int(input("Investment amount (XRP): "))
     platform.invest_in_campaign(campaign_id, investor_seed, amount)
 
@@ -49,11 +49,11 @@ def handle_check_balance(platform):
 def cli_handle():
     """Main CLI handler"""
     platform = CrowdfundingPlatform()
-    
+
     while True:
         display_menu()
-        choice = input("\nSelect option (1-6): ").strip()
-        
+        choice = input("\nSelect option (1-10): ").strip()
+
         if choice == "1":
             handle_create_campaign(platform)
         elif choice == "2":
@@ -63,9 +63,36 @@ def cli_handle():
         elif choice == "4":
             handle_investment(platform)
         elif choice == "5":
-            handle_check_balance(platform)
+            handle_create_microloan(platform)
         elif choice == "6":
+            platform.list_microloans()
+        elif choice == "7":
+            handle_claim_microloan(platform)
+        elif choice == "8":
+            handle_cancel_microloan(platform)
+        elif choice == "9":
+            handle_check_balance(platform)
+        elif choice == "10":
             print("👋 Goodbye!")
             break
         else:
-            print("❌ Invalid option")
+            print("❌ Invalid option. Please try again.")
+```def handle_create_microloan(platform):
+    """Handle microloan creation"""
+    farmer_seed = input("Farmer wallet seed: ")
+    investor_seed = input("Investor wallet seed: ")
+    amount = int(input("Loan amount (XRP): "))
+    duration = int(input("Loan duration (seconds): "))
+    platform.create_microloan(farmer_seed, investor_seed, amount, duration)
+
+def handle_claim_microloan(platform):
+    """Handle microloan claiming"""
+    microloan_id = int(input("Microloan ID to claim: "))
+    farmer_seed = input("Farmer wallet seed: ")
+    platform.claim_microloan(microloan_id, farmer_seed)
+
+def handle_cancel_microloan(platform):
+    """Handle microloan cancellation"""
+    microloan_id = int(input("Microloan ID to cancel: "))
+    investor_seed = input("Investor wallet seed: ")
+    platform.cancel_microloan(microloan_id, investor_seed)
