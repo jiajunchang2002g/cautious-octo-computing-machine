@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 import mod1
 from crowdfunding_platform import CrowdfundingPlatform
 
