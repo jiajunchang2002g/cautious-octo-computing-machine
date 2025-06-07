@@ -1,64 +1,8 @@
 {
-  "campaigns": [
-    {
-      "id": 1,
-      "farmer_name": "Jia Jun",
-      "project_title": "Cow Farm in Africa",
-      "description": "Cow Farm",
-      "funding_goal": 100,
-      "farmer_wallet_seed": "sEdVR2gY8dRYuoQSkzCQ32AQFxYt3qD",
-      "farmer_address": "rUHk9P7dGtL8G8KQ35B7AQswRyLiUnmxfu",
-      "token_currency": "COW",
-      "status": "approved",
-      "created_at": "2025-06-07T15:27:17.368020"
-    },
-    {
-      "id": 2,
-      "farmer_name": "a",
-      "project_title": "asdf",
-      "description": "asdf",
-      "funding_goal": 100,
-      "farmer_wallet_seed": "sEdV97JeVMZN2F9Lk71AVrwtjxdm6YW",
-      "farmer_address": "rpu4Y5LWdyEQjbYRCfQv1SJCH4DDkKqfJ5",
-      "token_currency": "ASD",
-      "status": "approved",
-      "created_at": "2025-06-07T17:03:55.262978"
-    },
-    {
-      "id": 3,
-      "farmer_name": "tom",
-      "project_title": "cow farm",
-      "description": "cows",
-      "funding_goal": 500,
-      "farmer_wallet_seed": "sEdVsnvkUfuKoBov5gW5PSXy8m8pV2a",
-      "farmer_address": "r42jSZPqmgNREJGihpbP7g3MK24i4PHv1F",
-      "token_currency": null,
-      "status": "pending",
-      "created_at": "2025-06-07T17:06:10.575202"
-    },
-    {
-      "id": 4,
-      "farmer_name": "tom",
-      "project_title": "cow farm",
-      "description": "cow",
-      "funding_goal": 40,
-      "farmer_wallet_seed": "sEdVidHGLufu4KSYsrDTuaSGLMH6VMK",
-      "farmer_address": "r4aC8HJhqi5wvKBtqcmERR4FJGyDzYGk2W",
-      "token_currency": "COW",
-      "status": "approved",
-      "created_at": "2025-06-07T17:10:30.862283"
-    }
-  ],
-  "investments": [
-    {
-      "id": 1,
-      "campaign_id": 4,
-      "investor_address": "rJjGN6pvUbD1PVsAcojcEtMhZc4eHTA2UE",
-      "amount": 50,
-      "token_id": null,
-      "created_at": "2025-06-07T17:16:03.144692"
-    }
-  ],
-  "next_campaign_id": 5,
-  "next_investment_id": 2
+  "campaigns": [],
+  "investments": [],
+  "microloans": [],
+  "next_campaign_id": 1,
+  "next_investment_id": 1,
+  "next_microloan_id": 1
 }
