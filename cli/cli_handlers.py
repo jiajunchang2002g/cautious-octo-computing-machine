@@ -12,8 +12,12 @@ def display_menu():
     print("2. List Campaigns") 
     print("3. Approve Campaign (Admin)")
     print("4. Invest in Campaign")
-    print("5. Check Wallet Balance")
-    print("6. Exit")
+    print("5. Create Microloan")
+    print("6. List Microloans")
+    print("7. Claim Microloan (Farmer)")
+    print("8. Cancel Microloan (Investor)")
+    print("9. Check Wallet Balance")
+    print("10. Exit")
 
 def handle_create_campaign(platform):
     """Handle campaign creation"""
@@ -77,19 +81,20 @@ def cli_handle():
             break
         else:
             print("❌ Invalid option. Please try again.")
-```def handle_create_microloan(platform):
+
+def handle_create_microloan(platform):
     """Handle microloan creation"""
-    farmer_seed = input("Farmer wallet seed: ")
+    farmer_address = input("Farmer wallet address: ")
     investor_seed = input("Investor wallet seed: ")
     amount = int(input("Loan amount (XRP): "))
-    duration = int(input("Loan duration (seconds): "))
-    platform.create_microloan(farmer_seed, investor_seed, amount, duration)
+    repayment_days = int(input("Repayment period (days): "))
+    platform.create_microloan(farmer_address, investor_seed, amount, repayment_days)
 
 def handle_claim_microloan(platform):
     """Handle microloan claiming"""
     microloan_id = int(input("Microloan ID to claim: "))
     farmer_seed = input("Farmer wallet seed: ")
-    platform.claim_microloan(microloan_id, farmer_seed)
+    platform.finish_microloan(microloan_id, farmer_seed)
 
 def handle_cancel_microloan(platform):
     """Handle microloan cancellation"""
