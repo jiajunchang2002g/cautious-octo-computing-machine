@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 import wallet
+import tokens
 from crowdfunding_platform import CrowdfundingPlatform
 
 def display_menu():
@@ -17,8 +18,9 @@ def display_menu():
     print("7. Claim Microloan (Farmer)")
     print("8. Cancel Microloan (Investor)")
     print("9. Check Wallet Balance")
-    print("10. Clear Storage (Admin)")
-    print("11. Exit")
+    print("10. Check Token Balance")
+    print("11. Clear Storage (Admin)")
+    print("12. Exit")
 
 def handle_create_campaign(platform):
     """Handle campaign creation"""
@@ -51,13 +53,26 @@ def handle_check_balance(platform):
     wallet_seed = input("Wallet seed: ")
     platform.check_balances(wallet_seed)
 
+def handle_check_token_balance():
+    """Handle token balance checking"""
+    account_address = input("Account address: ")
+    issuer_address = input("Token issuer address: ")
+    currency_code = input("Currency code (e.g., TOM): ")
+    
+    balance = tokens.get_token_balance(account_address, issuer_address, currency_code)
+    print(f"\n💰 Token Balance:")
+    print(f"   Account: {account_address}")
+    print(f"   Currency: {currency_code}")
+    print(f"   Issuer: {issuer_address}")
+    print(f"   Balance: {balance}")
+
 def cli_handle():
     """Main CLI handler"""
     platform = CrowdfundingPlatform()
 
     while True:
         display_menu()
-        choice = input("\nSelect option (1-11): ").strip()
+        choice = input("\nSelect option (1-12): ").strip()
 
         if choice == "1":
             handle_create_campaign(platform)
@@ -78,8 +93,10 @@ def cli_handle():
         elif choice == "9":
             handle_check_balance(platform)
         elif choice == "10":
-            handle_clear_storage(platform)
+            handle_check_token_balance()
         elif choice == "11":
+            handle_clear_storage(platform)
+        elif choice == "12":
             print("👋 Goodbye!")
             break
         else:

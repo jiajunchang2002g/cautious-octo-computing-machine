@@ -88,4 +88,16 @@ def configure_account(seed, default_setting):
             clear_flag=xrpl.models.transactions.AccountSetAsfFlag.ASF_DEFAULT_RIPPLE
         )
     response=xrpl.transaction.submit_and_wait(setting_tx,client,wallet)
-    return response.result    
+    return response.result
+
+def get_token_balance(account: str, issuer: str, currency: str) -> str:
+    """Get token balance for a specific currency from a specific issuer"""
+    client = JsonRpcClient(testnet_url)
+    req = AccountLines(
+        account=account
+    )
+    response = client.request(req)
+    for line in response.result["lines"]:
+        if line["currency"] == currency and line["account"] == issuer:
+            return line["balance"]
+    return "0"
