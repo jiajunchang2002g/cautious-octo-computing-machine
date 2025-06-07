@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 import mod1  # XRPL wallet functions
 import mod2  # Token/currency functions  
-import mod3  # NFT functions
 
 class CrowdfundingPlatform:
     def __init__(self):

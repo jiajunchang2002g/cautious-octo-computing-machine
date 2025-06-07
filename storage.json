@@ -1,0 +1,19 @@
+{
+  "campaigns": [
+    {
+      "id": 1,
+      "farmer_name": "Jia Jun",
+      "project_title": "Cow Farm in Africa",
+      "description": "Cow Farm",
+      "funding_goal": 100,
+      "farmer_wallet_seed": "sEdVR2gY8dRYuoQSkzCQ32AQFxYt3qD",
+      "farmer_address": "rUHk9P7dGtL8G8KQ35B7AQswRyLiUnmxfu",
+      "token_currency": "COW",
+      "status": "approved",
+      "created_at": "2025-06-07T15:27:17.368020"
+    }
+  ],
+  "investments": [],
+  "next_campaign_id": 2,
+  "next_investment_id": 1
+}
