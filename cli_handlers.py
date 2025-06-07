@@ -1,5 +1,5 @@
 import mod1
-from platform import CrowdfundingPlatform
+from crowdfunding_platform import CrowdfundingPlatform
 
 def display_menu():
     """Display the main menu"""
