@@ -11,6 +11,18 @@
       "token_currency": "TOM",
       "status": "approved",
       "created_at": "2025-06-07T17:28:46.705135"
+    },
+    {
+      "id": 2,
+      "farmer_name": "jj",
+      "project_title": "farm",
+      "description": "cow",
+      "funding_goal": 50,
+      "farmer_wallet_seed": "sEd7U7Q42Qnti8acyCi3L3KuhhjEAY5",
+      "farmer_address": "r9xPBC3d6sKR2bK76qjB3AyP6umqGLViz1",
+      "token_currency": "FAR",
+      "status": "approved",
+      "created_at": "2025-06-07T17:40:28.734556"
     }
   ],
   "investments": [
@@ -24,7 +36,7 @@
     }
   ],
   "microloans": [],
-  "next_campaign_id": 2,
+  "next_campaign_id": 3,
   "next_investment_id": 2,
   "next_microloan_id": 1
 }
