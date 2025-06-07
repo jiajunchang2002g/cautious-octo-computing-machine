@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
-import mod1
+import xrpl_wallet
 from crowdfunding_platform import CrowdfundingPlatform
 
 def display_menu():
@@ -33,7 +33,7 @@ def handle_investment(platform):
     campaign_id = int(input("Campaign ID to invest in: "))
     investor_seed = input("Your wallet seed (or press Enter for new wallet): ").strip()
     if not investor_seed:
-        new_wallet = mod1.get_account('')
+        new_wallet = xrpl_wallet.get_account('')
         investor_seed = new_wallet.seed
         print(f"New wallet created: {new_wallet.address}")
         print(f"Your seed (save this!): {investor_seed}")

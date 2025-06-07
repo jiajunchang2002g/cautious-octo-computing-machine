@@ -4,8 +4,8 @@ from datetime import datetime
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
-import mod1  # XRPL wallet functions
-import mod2  # Token/currency functions  
+import xrpl_wallet  # XRPL wallet functions
+import xrpl_tokens  # Token/currency functions  
 
 class CrowdfundingPlatform:
     def __init__(self):
@@ -42,7 +42,7 @@ class CrowdfundingPlatform:
         print(f"\n🚜 Creating campaign for {farmer_name}...")
         
         # Generate XRPL wallet for farmer
-        farmer_wallet = mod1.get_account('')
+        farmer_wallet = xrpl_wallet.get_account('')
         
         data = self.load_data()
         
@@ -95,7 +95,7 @@ class CrowdfundingPlatform:
         
         # Configure farmer account for token issuance
         print("   Setting up farmer account...")
-        mod2.configure_account(farmer_seed, True)
+        xrpl_tokens.configure_account(farmer_seed, True)
         
         # Update campaign status and token info
         campaign['status'] = 'approved'
@@ -123,13 +123,13 @@ class CrowdfundingPlatform:
         farmer_address = campaign['farmer_address']
         token_currency = campaign['token_currency']
         
-        investor_wallet = mod1.get_account(investor_seed)
+        investor_wallet = xrpl_wallet.get_account(investor_seed)
         
         print(f"\n💰 Processing investment of {investment_amount} XRP...")
         
         # Step 1: Send XRP to farmer
         print("   Sending XRP to farmer...")
-        xrp_result = mod1.send_xrp(investor_seed, investment_amount, farmer_address)
+        xrp_result = xrpl_wallet.send_xrp(investor_seed, investment_amount, farmer_address)
         
         if "Submit failed" in str(xrp_result):
             print(f"❌ XRP transfer failed: {xrp_result}")
@@ -137,12 +137,12 @@ class CrowdfundingPlatform:
             
         # Step 2: Create trust line for investor to receive tokens
         print("   Creating trust line for tokens...")
-        trust_result = mod2.create_trust_line(investor_seed, farmer_address, token_currency, investment_amount * 10)
+        trust_result = xrpl_tokens.create_trust_line(investor_seed, farmer_address, token_currency, investment_amount * 10)
         
         # Step 3: Send project tokens to investor
         print("   Sending project tokens...")
         token_amount = investment_amount  # 1:1 ratio for MVP
-        token_result = mod2.send_currency(farmer_seed, investor_wallet.address, token_currency, token_amount)
+        token_result = xrpl_tokens.send_currency(farmer_seed, investor_wallet.address, token_currency, token_amount)
         
         # Record investment
         investment = {
@@ -191,16 +191,16 @@ class CrowdfundingPlatform:
 
     def check_balances(self, wallet_seed):
         """Check wallet balances"""
-        wallet = mod1.get_account(wallet_seed)
+        wallet = xrpl_wallet.get_account(wallet_seed)
         print(f"\n💼 Wallet: {wallet.address}")
         
         # Get XRP balance
-        account_info = mod1.get_account_info(wallet.address)
+        account_info = xrpl_wallet.get_account_info(wallet.address)
         xrp_balance = int(account_info['Balance']) / 1000000  # Convert drops to XRP
         print(f"   XRP Balance: {xrp_balance} XRP")
         
         # Get token balances
-        balance_info = mod2.get_balance(wallet_seed, wallet_seed)
+        balance_info = xrpl_tokens.get_balance(wallet_seed, wallet_seed)
         if 'balances' in balance_info:
             print("   Token Balances:")
             for currency, amount in balance_info['balances'].items():
