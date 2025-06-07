@@ -44,8 +44,8 @@ def test_time_escrow():
     print("3. Creating time-based escrow...")
     loan_amount = 5  # XRP
     loan_amount_drops = str(int(loan_amount * 1000000))
-    finish_seconds = 60  # 1 minute
-    cancel_seconds = 300  # 5 minutes
+    finish_seconds = 300  # 5 minutes (increased from 1 minute)
+    cancel_seconds = 900  # 15 minutes (increased from 5 minutes)
     
     escrow_result = escrow_time.create_time_escrow(
         investor_wallet.seed,
@@ -125,7 +125,7 @@ def test_conditional_escrow():
     print("3. Creating conditional escrow...")
     loan_amount = 3  # XRP
     loan_amount_drops = str(int(loan_amount * 1000000))
-    cancel_seconds = 300  # 5 minutes
+    cancel_seconds = 600  # 10 minutes (increased from 5 minutes)
     
     escrow_result = escrow_conditional.create_conditional_escrow(
         investor_wallet.seed,
