@@ -35,9 +35,30 @@
       "token_currency": null,
       "status": "pending",
       "created_at": "2025-06-07T17:06:10.575202"
+    },
+    {
+      "id": 4,
+      "farmer_name": "tom",
+      "project_title": "cow farm",
+      "description": "cow",
+      "funding_goal": 40,
+      "farmer_wallet_seed": "sEdVidHGLufu4KSYsrDTuaSGLMH6VMK",
+      "farmer_address": "r4aC8HJhqi5wvKBtqcmERR4FJGyDzYGk2W",
+      "token_currency": "COW",
+      "status": "approved",
+      "created_at": "2025-06-07T17:10:30.862283"
     }
   ],
-  "investments": [],
-  "next_campaign_id": 4,
-  "next_investment_id": 1
+  "investments": [
+    {
+      "id": 1,
+      "campaign_id": 4,
+      "investor_address": "rJjGN6pvUbD1PVsAcojcEtMhZc4eHTA2UE",
+      "amount": 50,
+      "token_id": null,
+      "created_at": "2025-06-07T17:16:03.144692"
+    }
+  ],
+  "next_campaign_id": 5,
+  "next_investment_id": 2
 }
