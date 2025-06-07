@@ -11,9 +11,33 @@
       "token_currency": "COW",
       "status": "approved",
       "created_at": "2025-06-07T15:27:17.368020"
+    },
+    {
+      "id": 2,
+      "farmer_name": "a",
+      "project_title": "asdf",
+      "description": "asdf",
+      "funding_goal": 100,
+      "farmer_wallet_seed": "sEdV97JeVMZN2F9Lk71AVrwtjxdm6YW",
+      "farmer_address": "rpu4Y5LWdyEQjbYRCfQv1SJCH4DDkKqfJ5",
+      "token_currency": "ASD",
+      "status": "approved",
+      "created_at": "2025-06-07T17:03:55.262978"
+    },
+    {
+      "id": 3,
+      "farmer_name": "tom",
+      "project_title": "cow farm",
+      "description": "cows",
+      "funding_goal": 500,
+      "farmer_wallet_seed": "sEdVsnvkUfuKoBov5gW5PSXy8m8pV2a",
+      "farmer_address": "r42jSZPqmgNREJGihpbP7g3MK24i4PHv1F",
+      "token_currency": null,
+      "status": "pending",
+      "created_at": "2025-06-07T17:06:10.575202"
     }
   ],
   "investments": [],
-  "next_campaign_id": 2,
+  "next_campaign_id": 4,
   "next_investment_id": 1
 }

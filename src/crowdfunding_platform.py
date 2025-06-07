@@ -2,7 +2,6 @@ import json
 import os
 from datetime import datetime
 import sys
-import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
 import wallet  # XRPL wallet functions
 import tokens  # Token/currency functions
