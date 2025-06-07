@@ -1,4 +1,5 @@
 import xrpl
+
 testnet_url = "https://s.devnet.rippletest.net:51234/"
 
 def get_account(seed):

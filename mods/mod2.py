@@ -2,6 +2,7 @@ import xrpl
 from xrpl.clients import JsonRpcClient
 from xrpl.wallet import Wallet
 
+
 testnet_url = "https://s.devnet.rippletest.net:51234"
 
 #####################
