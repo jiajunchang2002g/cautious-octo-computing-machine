@@ -88,7 +88,14 @@ def cli_handle():
 def handle_create_microloan(platform):
     """Handle microloan creation"""
     farmer_address = input("Farmer wallet address: ")
-    investor_seed = input("Investor wallet seed: ")
+    investor_seed = input("Investor wallet seed (or press Enter for new wallet): ").strip()
+    
+    if not investor_seed:
+        new_wallet = wallet.get_account('')
+        investor_seed = new_wallet.seed
+        print(f"New investor wallet created: {new_wallet.address}")
+        print(f"Your seed (save this!): {investor_seed}")
+    
     amount = int(input("Loan amount (XRP): "))
     repayment_days = int(input("Repayment period (days): "))
     platform.create_microloan(farmer_address, investor_seed, amount, repayment_days)

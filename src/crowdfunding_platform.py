@@ -193,6 +193,22 @@ class CrowdfundingPlatform:
         """Create an escrow-based microloan"""
         print(f"\n🏦 Creating microloan of {loan_amount} XRP...")
         
+        # Verify investor wallet exists and has sufficient funds
+        investor_wallet = wallet.get_account(investor_seed)
+        print(f"   Investor wallet: {investor_wallet.address}")
+        
+        try:
+            account_info = wallet.get_account_info(investor_wallet.address)
+            xrp_balance = int(account_info['Balance']) / 1000000
+            print(f"   Investor XRP balance: {xrp_balance} XRP")
+            
+            if xrp_balance < loan_amount + 2:  # +2 XRP for reserves and fees
+                print(f"❌ Insufficient funds. Need at least {loan_amount + 2} XRP")
+                return None
+        except Exception as e:
+            print(f"❌ Investor wallet not found or not funded: {e}")
+            return None
+        
         # Convert loan amount to drops (XRP smallest unit)
         loan_amount_drops = str(int(loan_amount * 1000000))
         
