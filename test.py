@@ -10,8 +10,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), 'mods'))
 
 import wallet
-import escrow_time
-import escrow_conditional
+import escrow_utils
 from datetime import datetime
 
 def test_time_escrow():
@@ -47,7 +46,7 @@ def test_time_escrow():
     finish_seconds = 300  # 5 minutes (increased from 1 minute)
     cancel_seconds = 900  # 15 minutes (increased from 5 minutes)
     
-    escrow_result = escrow_time.create_time_escrow(
+    escrow_result = escrow_utils.create_time_escrow(
         investor_wallet.seed,
         loan_amount_drops,
         farmer_wallet.address,
@@ -66,7 +65,7 @@ def test_time_escrow():
     # Check escrows
     print("4. Checking active escrows...")
     try:
-        escrows = escrow_time.get_escrows(investor_wallet.address)
+        escrows = escrow_utils.get_escrows(investor_wallet.address)
         if escrows.get('account_objects'):
             print(f"   Found {len(escrows['account_objects'])} escrow(s)")
             for escrow in escrows['account_objects']:
@@ -79,7 +78,7 @@ def test_time_escrow():
     
     # Test finishing escrow (farmer claims)
     print("5. Testing escrow finish (farmer claims funds)...")
-    finish_result = escrow_time.finish_time_escrow(
+    finish_result = escrow_utils.finish_time_escrow(
         farmer_wallet.seed,
         investor_wallet.address,
         escrow_sequence
@@ -89,7 +88,7 @@ def test_time_escrow():
         print(f"   ❌ Escrow finish failed: {finish_result}")
         # Try canceling instead
         print("6. Testing escrow cancel (investor reclaims)...")
-        cancel_result = escrow_time.cancel_time_escrow(
+        cancel_result = escrow_utils.cancel_escrow(
             investor_wallet.seed,
             investor_wallet.address,
             escrow_sequence
@@ -117,7 +116,7 @@ def test_conditional_escrow():
     
     # Generate condition and fulfillment
     print("2. Generating cryptographic condition...")
-    condition, fulfillment = escrow_conditional.generate_condition()
+    condition, fulfillment = escrow_utils.generate_condition()
     print(f"   Condition: {condition[:20]}...")
     print(f"   Fulfillment: {fulfillment[:20]}...")
     
@@ -127,7 +126,7 @@ def test_conditional_escrow():
     loan_amount_drops = str(int(loan_amount * 1000000))
     cancel_seconds = 600  # 10 minutes (increased from 5 minutes)
     
-    escrow_result = escrow_conditional.create_conditional_escrow(
+    escrow_result = escrow_utils.create_conditional_escrow(
         investor_wallet.seed,
         loan_amount_drops,
         farmer_wallet.address,
@@ -145,7 +144,7 @@ def test_conditional_escrow():
     
     # Test finishing conditional escrow
     print("4. Testing conditional escrow finish...")
-    finish_result = escrow_conditional.finish_conditional_escrow(
+    finish_result = escrow_utils.finish_conditional_escrow(
         farmer_wallet.seed,
         investor_wallet.address,
         escrow_sequence,

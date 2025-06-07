@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mods'))
 import wallet  # XRPL wallet functions
 import tokens  # Token/currency functions
-import escrow_time  # Time-based escrow functions  
+import escrow_utils  # Comprehensive escrow functions  
 
 class CrowdfundingPlatform:
     def __init__(self):
@@ -218,7 +218,7 @@ class CrowdfundingPlatform:
         
         # Create time-based escrow
         print("   Creating escrow contract...")
-        escrow_result = escrow_time.create_time_escrow(
+        escrow_result = escrow_utils.create_time_escrow(
             investor_seed,
             loan_amount_drops,
             farmer_address,
@@ -279,7 +279,7 @@ class CrowdfundingPlatform:
         print(f"\n💰 Finishing microloan #{microloan_id}...")
         
         # Farmer claims the escrowed funds
-        finish_result = escrow_time.finish_time_escrow(
+        finish_result = escrow_utils.finish_time_escrow(
             farmer_seed,
             microloan['investor_address'],
             microloan['escrow_sequence']
@@ -313,7 +313,7 @@ class CrowdfundingPlatform:
         print(f"\n🔄 Canceling microloan #{microloan_id}...")
         
         # Investor reclaims the escrowed funds
-        cancel_result = escrow_time.cancel_time_escrow(
+        cancel_result = escrow_utils.cancel_escrow(
             investor_seed,
             microloan['investor_address'],
             microloan['escrow_sequence']
