@@ -1,4 +1,3 @@
-
 import mod1
 from platform import CrowdfundingPlatform
 
