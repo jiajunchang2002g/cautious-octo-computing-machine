@@ -17,7 +17,8 @@ def display_menu():
     print("7. Claim Microloan (Farmer)")
     print("8. Cancel Microloan (Investor)")
     print("9. Check Wallet Balance")
-    print("10. Exit")
+    print("10. Clear Storage (Admin)")
+    print("11. Exit")
 
 def handle_create_campaign(platform):
     """Handle campaign creation"""
@@ -56,7 +57,7 @@ def cli_handle():
 
     while True:
         display_menu()
-        choice = input("\nSelect option (1-10): ").strip()
+        choice = input("\nSelect option (1-11): ").strip()
 
         if choice == "1":
             handle_create_campaign(platform)
@@ -77,6 +78,8 @@ def cli_handle():
         elif choice == "9":
             handle_check_balance(platform)
         elif choice == "10":
+            handle_clear_storage(platform)
+        elif choice == "11":
             print("👋 Goodbye!")
             break
         else:
@@ -101,3 +104,11 @@ def handle_cancel_microloan(platform):
     microloan_id = int(input("Microloan ID to cancel: "))
     investor_seed = input("Investor wallet seed: ")
     platform.cancel_microloan(microloan_id, investor_seed)
+
+def handle_clear_storage(platform):
+    """Handle storage clearing"""
+    confirm = input("⚠️  This will delete ALL campaigns, investments, and microloans. Type 'CONFIRM' to proceed: ")
+    if confirm == "CONFIRM":
+        platform.clear_storage()
+    else:
+        print("❌ Storage clear cancelled.")

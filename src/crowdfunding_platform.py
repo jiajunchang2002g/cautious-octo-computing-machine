@@ -356,3 +356,23 @@ class CrowdfundingPlatform:
             print("   Token Balances:")
             for currency, amount in balance_info['balances'].items():
                 print(f"     {currency}: {amount}")
+
+    def clear_storage(self):
+        """Clear all storage data and reinitialize"""
+        print("\n🗑️  Clearing storage...")
+        
+        # Create fresh initial data
+        initial_data = {
+            'campaigns': [],
+            'investments': [],
+            'microloans': [],
+            'next_campaign_id': 1,
+            'next_investment_id': 1,
+            'next_microloan_id': 1
+        }
+        
+        # Save the cleared data
+        self.save_data(initial_data)
+        
+        print("✅ Storage cleared successfully!")
+        print("   All campaigns, investments, and microloans have been deleted.")
