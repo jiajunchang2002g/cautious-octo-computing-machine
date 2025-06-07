@@ -9,7 +9,7 @@ import mod2  # Token/currency functions
 
 class CrowdfundingPlatform:
     def __init__(self):
-        self.storage_file = 'storage.json'
+        self.storage_file = os.path.join('storage', 'storage.json')
         self.init_storage()
         
     def init_storage(self):
