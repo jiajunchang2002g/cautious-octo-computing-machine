@@ -183,6 +183,3 @@ def get_escrow_sequence(prev_txn_id):
         return result["TicketSequence"]
     return None
 
-# Backward compatibility aliases
-cancel_time_escrow = cancel_escrow
-get_transaction = lambda account, ledger_index: None  # Placeholder for compatibility

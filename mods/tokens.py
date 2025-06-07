@@ -1,4 +1,5 @@
 import xrpl
+from xrpl.models.requests import AccountLines
 from xrpl.clients import JsonRpcClient
 from xrpl.wallet import Wallet
 
