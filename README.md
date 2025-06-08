@@ -263,7 +263,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 - **GitHub Repository**: [https://github.com/your-username/wegro-crowdfunding](https://github.com/your-username/wegro-crowdfunding)
 - **Canva Presentation**: [https://www.canva.com/design/your-presentation-link](https://www.canva.com/design/your-presentation-link)
-- **Demo Video**: [https://www.loom.com/share/your-demo-video-link](https://www.loom.com/share/your-demo-video-link)
+- **Demo Video**: [Loom video](https://www.loom.com/share/41fc49e649784751a541563ed693ebb8?sid=f6439042-12df-48ea-b7d7-f94327d0a8e3)
 - **XRPL Testnet Explorer**: [https://testnet.xrpl.org/](https://testnet.xrpl.org/)
 
 ---
