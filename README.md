@@ -273,8 +273,8 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 🔗 Links
 
-- **GitHub Repository**: [https://github.com/your-username/wegro-crowdfunding](https://github.com/your-username/wegro-crowdfunding)
-- **Canva Presentation**: [https://www.canva.com/design/your-presentation-link](https://www.canva.com/design/your-presentation-link)
+- **GitHub Repository**: [gthub]([https://github.com/your-username/wegro-crowdfunding](https://github.com/jiajunchang2002g/cautious-octo-computing-machine))
+- **Canva Presentation**: [canva](https://www.canva.com/design/DAGpu9CfzAE/S2wAdZXDIxYBHQaesxTerA/edit?utm_content=DAGpu9CfzAE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 - **Demo Video**: [Loom video](https://www.loom.com/share/41fc49e649784751a541563ed693ebb8?sid=f6439042-12df-48ea-b7d7-f94327d0a8e3)
 - **XRPL Testnet Explorer**: [https://testnet.xrpl.org/](https://testnet.xrpl.org/)
 
