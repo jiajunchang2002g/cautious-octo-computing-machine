@@ -129,7 +129,7 @@ WeGro Platform Architecture:
 
 ## 📱 Demo Video
 
-[🎥 Watch Full Demo Video](https://www.loom.com/share/your-demo-video-link)
+[🎥 Watch Full Demo Video](https://www.loom.com/share/41fc49e649784751a541563ed693ebb8?sid=f6439042-12df-48ea-b7d7-f94327d0a8e3)
 
 *This video demonstrates:*
 - Complete farmer campaign creation process
