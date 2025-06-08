@@ -145,8 +145,20 @@ WeGro Platform Architecture:
 *Farmers can easily create campaigns with project details and funding goals*
 
 ### Investment Dashboard
-![Investment Process](https://your-screenshot-url/investment-process.png)
-*Investors browse approved campaigns and fund projects directly*
+![Screenshot 2025-06-08 010707](https://github.com/user-attachments/assets/cf247260-8796-41eb-8276-a9974508ec7b)
+![Screenshot 2025-06-08 010651](https://github.com/user-attachments/assets/c92b50ba-1ad1-4c1b-8173-6fc3a6da5bcf)
+![Screenshot 2025-06-08 010647](https://github.com/user-attachments/assets/59637e72-5e63-4306-94c6-ece61a6ea8ae)
+![Screenshot 2025-06-08 010637](https://github.com/user-attachments/assets/4cfece54-3f2f-4ea2-8151-42b3b2ae8751)
+![Screenshot 2025-06-08 010628](https://github.com/user-attachments/assets/c394cfa5-f71c-483e-b601-4e1282ec02c6)
+![Screenshot 2025-06-08 010558](https://github.com/user-attachments/assets/32291d00-74c4-44a7-ab65-1d4887bad27f)
+![Screenshot 2025-06-08 010538](https://github.com/user-attachments/assets/4647a87c-e566-47b8-a32f-6115b68a3b53)
+![Screenshot 2025-06-08 010528](https://github.com/user-attachments/assets/ee430dbc-9a00-4d17-808d-4d0ee891c0ae)
+![Screenshot 2025-06-08 010511](https://github.com/user-attachments/assets/39054aa2-09ce-49eb-9ecd-c603db69d42e)
+
+
+![Screenshot 2025-06-08 113214](https://github.com/user-attachments/assets/7532608f-377c-4166-86fb-6eff304379da)
+![Screenshot 2025-06-08 113154](https://github.com/user-attachments/assets/808894d4-c951-410b-845b-b39de1d98fdd)
+![Screenshot 2025-06-08 113148](https://github.com/user-attachments/assets/3f84f0ca-bd32-4d4b-9cb9-fa2372da7862)
 
 ### Microloan System
 ![Microloan Interface](https://your-screenshot-url/microloan-system.png)
