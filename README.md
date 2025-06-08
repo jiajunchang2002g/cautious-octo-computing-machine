@@ -182,7 +182,7 @@ WeGro Platform Architecture:
 
 ## 🎨 Presentation
 
-[📊 View Canva Presentation](https://www.canva.com/design/your-presentation-link)
+[📊 View Canva Presentation](https://www.canva.com/design/DAGpu9CfzAE/S2wAdZXDIxYBHQaesxTerA/edit?utm_content=DAGpu9CfzAE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 *Includes slides on:*
 - Team Introduction
