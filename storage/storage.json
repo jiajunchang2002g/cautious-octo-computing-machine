@@ -23,6 +23,18 @@
       "token_currency": "FAR",
       "status": "approved",
       "created_at": "2025-06-07T17:40:28.734556"
+    },
+    {
+      "id": 3,
+      "farmer_name": "aa",
+      "project_title": "abc",
+      "description": "abcd",
+      "funding_goal": 100,
+      "farmer_wallet_seed": "sEdTzuEF3VBzcJGQEsB8TXwketEbWQT",
+      "farmer_address": "rNdeDqbYfzq4H1e5j6mtXW6oiNtq8drY5i",
+      "token_currency": null,
+      "status": "pending",
+      "created_at": "2025-06-08T02:39:45.018660"
     }
   ],
   "investments": [
@@ -33,10 +45,18 @@
       "amount": 5,
       "token_id": null,
       "created_at": "2025-06-07T17:30:40.333405"
+    },
+    {
+      "id": 2,
+      "campaign_id": 2,
+      "investor_address": "rhW9YvHqfBfqLJKrLW4diVYpgSBVUyhGXg",
+      "amount": 3,
+      "token_id": null,
+      "created_at": "2025-06-08T02:41:51.993101"
     }
   ],
   "microloans": [],
-  "next_campaign_id": 3,
-  "next_investment_id": 2,
+  "next_campaign_id": 4,
+  "next_investment_id": 3,
   "next_microloan_id": 1
 }
