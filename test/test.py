@@ -1,51 +1,83 @@
-from datetime import datetime, timedelta
+import json
+from mod1 import get_account, get_account_info, send_xrp
+from mod8 import create_time_escrow, finish_time_escrow, get_escrows, cancel_time_escrow, get_transaction
 
-from xrpl.clients import JsonRpcClient
-from xrpl.models import EscrowCreate
-from xrpl.transaction import submit_and_wait
-from xrpl.utils import datetime_to_ripple_time, xrp_to_drops
-from xrpl.wallet import generate_faucet_wallet
+def print_json(data):
+    print(json.dumps(data, indent=4))
 
-# Create Escrow
+def main():
+    while True:
+        print("\n--- XRP CLI Menu ---")
+        print("1. Create new account (get_account)")
+        print("2. Get account info")
+        print("3. Send XRP")
+        print("4. Create Time-based Escrow")
+        print("5. Cancel Time-based Escrow")
+        print("6. Finish Time-based Escrow")
+        print("7. Get Escrows")
+        print("8. Get Transaction")
+        print("9. Exit")
 
-client = JsonRpcClient("https://s.altnet.rippletest.net:51234") # Connect to client
+        choice = input("Choose an option (1-9): ").strip()
 
-amount_to_escrow = 10.000 
+        if choice == "1":
+            seed = input("Enter existing seed (leave blank to create new): ").strip()
+            wallet = get_account(seed) if seed else get_account(None)
+            print("Address:", wallet.classic_address)
+            print("Seed:", wallet.seed)
 
-receiver_addr = "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe" # Example: send back to Testnet Faucet
+        elif choice == "2":
+            acct = input("Enter account address: ").strip()
+            info = get_account_info(acct)
+            print_json(info)
 
-# Escrow will be available to claim after 3 days
-claim_date = datetime_to_ripple_time(datetime.now() + timedelta(days=3))
+        elif choice == "3":
+            seed = input("Sender seed: ").strip()
+            dest = input("Destination address: ").strip()
+            amt = input("Amount (in XRP drops): ").strip()
+            response = send_xrp(seed, amt, dest)
+            print_json(response.result)
 
-# Escrow will expire after 5 days
-expiry_date = datetime_to_ripple_time(datetime.now() + timedelta(days=5))
+        elif choice == "4":
+            seed = input("Sender seed: ").strip()
+            amt = input("Amount (in XRP drops): ").strip()
+            dest = input("Destination address: ").strip()
+            finish = input("Escrow Finish (unix seconds from now): ").strip()
+            cancel = input("Escrow Cancel (unix seconds from now): ").strip()
+            result = create_time_escrow(seed, amt, dest, finish, cancel)
+            print_json(result)
 
-# Optional field
-# You can optionally use a Crypto Condition to allow for dynamic release of funds. For example:
-condition = "A02580205A0E9E4018BE1A6E0F51D39B483122EFDF1DDEF3A4BE83BE71522F9E8CDAB179810120" # do not use in production
+        elif choice == "5":
+            seed = input("Seed of escrow creator: ").strip()
+            owner = input("Escrow owner address: ").strip()
+            seq = input("Escrow sequence number: ").strip()
+            result = cancel_time_escrow(seed, owner, seq)
+            print_json(result)
 
-# sender wallet object
-sender_wallet = generate_faucet_wallet(client=client)
+        elif choice == "6":
+            seed = input("Finisher's seed: ").strip()
+            owner = input("Escrow owner address: ").strip()
+            seq = input("Escrow sequence number: ").strip()
+            result = finish_time_escrow(seed, owner, seq)
+            print_json(result)
 
-# Build escrow create transaction
-create_txn = EscrowCreate(
-    account=sender_wallet.address,
-    amount=xrp_to_drops(amount_to_escrow), 
-    destination=receiver_addr,
-    finish_after=claim_date, 
-    cancel_after=expiry_date,
-    condition=condition)
+        elif choice == "7":
+            acct = input("Account to check escrows for: ").strip()
+            result = get_escrows(acct)
+            print_json(result)
 
-# Autofill, sign, then submit transaction and wait for result
-stxn_response = submit_and_wait(create_txn, client, sender_wallet)
+        elif choice == "8":
+            acct = input("Account address: ").strip()
+            tx_hash = input("Transaction hash: ").strip()
+            result = get_transaction(acct, tx_hash)
+            print_json(result)
 
-# Return result of transaction
-stxn_result = stxn_response.result
+        elif choice == "9":
+            print("Exiting...")
+            break
 
+        else:
+            print("Invalid choice, try again.")
 
-# Parse result and print out the neccesary info
-print(stxn_result["tx_json"]["Account"])
-print(stxn_result["tx_json"]["Sequence"])
-
-print(stxn_result["meta"]["TransactionResult"])
-print(stxn_result["hash"])
+if __name__ == "__main__":
+    main()

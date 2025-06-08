@@ -44,10 +44,9 @@ Core Features
 
 Technical Implementation
 
-    Built on XRPL testnet using xrpl-py SDK
-    Modular architecture with separate modules for XRPL operations 
+    Built on XRPL testnet using xrpl-py SDK 
     Campaign lifecycle: Create → Approve → Invest
-    Real XRPL transactions for all operations (XRP transfers, token issuance, trust lines
+    Real XRPL transactions for all operations (XRP transfers, token issuance, trust lines)
 
 Include a full description (the problems it solves, how the XRP Ledger was used to achieve it)
 
