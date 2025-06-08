@@ -160,6 +160,8 @@ WeGro Platform Architecture:
 ![Screenshot 2025-06-08 113154](https://github.com/user-attachments/assets/808894d4-c951-410b-845b-b39de1d98fdd)
 ![Screenshot 2025-06-08 113148](https://github.com/user-attachments/assets/3f84f0ca-bd32-4d4b-9cb9-fa2372da7862)
 
+![5](images/5.jpeg)
+
 ### Microloan System
 ![Microloan Interface](https://your-screenshot-url/microloan-system.png)
 *Escrow-based microloans with automatic time-based execution*
