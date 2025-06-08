@@ -1,5 +1,5 @@
 
-# WeGro - Farmer Crowdfunding Platform on XRP Ledger
+# AgriVest - Farmer Crowdfunding Platform on XRP Ledger
 
 <150 chars summary: A decentralized crowdfunding platform for farmers using XRP Ledger with tokenized investments, escrow-based microloans, and transparent funding.
 
